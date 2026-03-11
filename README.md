@@ -1,342 +1,215 @@
-India General Election Results 2024 Dashboard Analysis
-Project Report
-1. Introduction
+Technical Specification: India General Election 2024 Reporting System
 
-The India General Election Results 2024 Dashboard is designed to provide a comprehensive analytical view of election outcomes across India. The dashboard allows users to analyze political performance at multiple levels such as national, state, and constituency.
+1. Executive Summary and Project Scope
 
-The project was developed using Microsoft Power BI, enabling interactive visualizations, drill-through analysis, and dynamic filtering. It helps political analysts, researchers, students, and the general public to understand the political landscape of the country through data-driven insights.
+The India General Election 2024 Reporting System is a strategic Business Intelligence solution designed to transform the massive scale of Indian electoral data into a high-fidelity analytical narrative. In the world's largest democracy, interpreting results requires more than simple tallying; it demands the ability to synthesize multi-party performance into coherent alliance-based insights. This system serves political analysts, researchers, and policymakers by providing a single source of truth for understanding regional mandates and voter sentiment.
 
-The dashboard includes multiple pages that display:
+The project scope encompasses a multi-tiered reporting architecture providing visibility at National, State, and Constituency levels. Utilizing the "India General Election Results – 2024" dataset, the system is engineered to provide a robust framework for tracking performance across complex political coalitions. The technical objective is to deliver a high-performance architecture capable of handling granular voter behavior analysis and sophisticated ranking logic. This technical foundation begins with the rigorous categorization of political entities and their respective alliance affiliations.
 
-Alliance-wise seat distribution
+2. Data Categorization and Alliance Logic
 
-State-wise election performance
+In India’s multi-party parliamentary system, individual party performance is often secondary to the collective strength of political coalitions. Precise alliance mapping is a strategic necessity for this BI system, as it directly impacts the determination of the "Majority Alliance" and dictates the overall narrative of the election results.
 
-Constituency-level candidate analysis
+Alliance Classification Table
 
-Party performance comparison
+To maintain analytical integrity, parties must be mapped to specific "buckets." This mapping ensures that the aggregate strength of the primary competing blocs—the National Democratic Alliance (NDA) and the Indian National Developmental Inclusive Alliance (I.N.D.I.A.)—is accurately reflected.
 
-Detailed tabular data for deeper analysis
+Alliance Group	Included Political Parties
+NDA Alliance	BJP, TDP, JD(U), SHS, AJSUP, ADAL, AGP, HAMS, JnP, JD(S), LJPRV, NCP, RLD, SKM
+I.N.D.I.A. Alliance	INC, AAAP, AITC, BHRTADVSIP, CPI(M), CPI(ML)(L), CPI, DMK, IUML, JKN, JMM, KEC, MDMK, NCPSP, RJD, RLTP, RSP, SP, SHSUBT, VCK
+OTHER	All independent candidates and parties not explicitly listed above.
 
-2. Objectives of the Project
+Technical Implementation: Alliance Mapping
 
-The main objectives of this dashboard are:
+The following DAX calculated column must be implemented in the partywise_results table to establish the alliance logic.
 
-To analyze seat distribution among major alliances such as NDA and I.N.D.I.A.
+Party Alliance = 
+IF( 
+    partywise_results[Party] = "Bharatiya Janata Party - BJP" || 
+    partywise_results[Party] = "Telugu Desam - TDP" || 
+    partywise_results[Party] = "Janata Dal  (United) - JD(U)" || 
+    partywise_results[Party] = "Shiv Sena - SHS" || 
+    partywise_results[Party] = "AJSU Party - AJSUP" || 
+    partywise_results[Party] = "Apna Dal (Soneylal) - ADAL" || 
+    partywise_results[Party] = "Asom Gana Parishad - AGP" || 
+    partywise_results[Party] = "Hindustani Awam Morcha (Secular) - HAMS" || 
+    partywise_results[Party] = "Janasena Party - JnP" || 
+    partywise_results[Party] = "Janata Dal  (Secular) - JD(S)" || 
+    partywise_results[Party] = "Lok Janshakti Party(Ram Vilas) - LJPRV" || 
+    partywise_results[Party] = "Nationalist Congress Party - NCP" || 
+    partywise_results[Party]= "Rashtriya Lok Dal - RLD" || 
+    partywise_results[Party] = "Sikkim Krantikari Morcha - SKM", 
+    "NDA", 
+    IF( 
+        partywise_results[Party] = "Indian National Congress - INC" || 
+        partywise_results[Party] = "Aam Aadmi Party - AAAP" || 
+        partywise_results[Party] = "All India Trinamool Congress - AITC" || 
+        partywise_results[Party] = "Bharat Adivasi Party - BHRTADVSIP" || 
+        partywise_results[Party]= "Communist Party of India  (Marxist) - CPI(M)" || 
+        partywise_results[Party] = "Communist Party of India  (Marxist-Leninist)  (Liberation) - CPI(ML)(L)" || 
+        partywise_results[Party] = "Communist Party of India - CPI" || 
+        partywise_results[Party] = "Dravida Munnetra Kazhagam - DMK" || 
+        partywise_results[Party] = "Indian Union Muslim League - IUML" || 
+        partywise_results[Party] = "Jammu & Kashmir National Conference - JKN" || 
+        partywise_results[Party] = "Jharkhand Mukti Morcha - JMM" || 
+        partywise_results[Party] = "Kerala Congress - KEC" || 
+        partywise_results[Party] = "Marumalarchi Dravida Munnetra Kazhagam - MDMK" || 
+        partywise_results[Party] = "Nationalist Congress Party Sharadchandra Pawar - NCPSP" || 
+        partywise_results[Party] = "Rashtriya Janata Dal - RJD" || 
+        partywise_results[Party] = "Rashtriya Loktantrik Party - RLTP" || 
+        partywise_results[Party] = "Revolutionary Socialist Party - RSP" || 
+        partywise_results[Party] = "Samajwadi Party - SP" || 
+        partywise_results[Party] = "Shiv Sena (Uddhav Balasaheb Thackrey) - SHSUBT" || 
+        partywise_results[Party] = "Viduthalai Chiruthaigal Katchi - VCK", 
+        "I.N.D.I.A.", 
+        "OTHER" 
+    ) 
+)
 
-To identify state-wise political dominance
 
-To analyze candidate performance at constituency level
+Data Modeling and Relationships
 
-To create interactive dashboards for data exploration
+To ensure high-performance filtering across the model, use the LOOKUPVALUE function to propagate party attributes into the constituencywise_results table:
 
-To enable drill-through and export functionality for deeper analysis
+* Party Alliance (result): LOOKUPVALUE(partywise_results[Party Alliance], partywise_results[Party ID], constituencywise_results[Party ID])
+* Party Name (result): LOOKUPVALUE(partywise_results[Party], partywise_results[Party ID], constituencywise_results[Party ID])
+* Party Short Name: LOOKUPVALUE(partywise_results[short_party], partywise_results[Party ID], constituencywise_results[Party ID])
 
-3. Tools & Technologies Used
-Tool	Purpose
-Power BI	Data visualization and dashboard creation
-DAX	Data modeling and calculations
-Excel / Dataset	Source data
-Map Visualization	State and constituency analysis
-4. Data Model Overview
+With this logic established, the system can power the high-level KPI framework.
 
-The dataset consists of multiple tables used to analyze election results.
+3. Core KPI Framework and Calculation Logic
 
-Main Tables
+Standardized Key Performance Indicators (KPIs) ensure consistency across different analytical lenses. Whether viewing data at a national scale or drilling into a specific state, the underlying logic for calculating seats and alliance dominance remains uniform.
 
-constituencywise_results
+Primary DAX Measures
 
-Constituency Name
+The following measures are mandatory for the Overview dashboard:
 
-Party ID
+Alliance Seat Counts:
 
-Candidate Name
+NDA Seats count = CALCULATE(COUNT(constituencywise_results[Constituency Name]), partywise_results[Party Alliance]="NDA")
 
-Total Votes
+I.N.D.I.A Seats count = CALCULATE(COUNT(constituencywise_results[Constituency Name]), partywise_results[Party Alliance]="I.N.D.I.A.")
 
-Margin
 
-constituencywise_details
+Winning Alliance Logic (with Tie-Break): This measure determines the overall winner. Per technical requirements, the NDA is identified as the winner in the event of a tie.
 
-Candidate
+Winning Alliance = 
+VAR NDASeats = [NDA Seats count]
+VAR INDIAseats = [I.N.D.I.A Seats count]
+RETURN IF(NDASeats >= INDIAseats, "NDA", "I.N.D.I.A.")
 
-Party
 
-Total Votes
+Percentage of Total Seats
 
-Vote Share %
+To provide a relative measure of dominance, the system must calculate seat shares. This is critical for comparative analysis between election years or across states with varying constituency counts.
 
-partywise_results
+* Formula: [Alliance Seat Count] / COUNTROWS(constituencywise_results)
 
-Party ID
+This macro-level framework provides the necessary context for analyzing the competitiveness of individual candidates.
 
-Party Name
+4. Advanced Candidate Performance Metrics (Runner-Up Logic)
 
-Party Alliance
+Tracking runner-up and second runner-up data is essential for identifying "swing" constituencies and understanding the fragmentation of voter choice. This logic identifies candidates who, while not winning, commanded significant voter share.
 
-states
+Ranking and Competitive Metrics
 
-State Name
+The following DAX logic must be applied to identify the top three performers within a constituency. Note the use of variables (VAR) to manage the filter context of total votes.
 
-State ID
+Runner-Up Candidate:
 
-Relationships are created between tables using Party ID, Constituency ID, and State ID.
+Runner UP Condidate = 
+VAR Maxvotes = MAX(constituencywise_details[Total Votes]) 
+VAR Secondmaxvotes = MAXX( 
+    FILTER(constituencywise_details, constituencywise_details[Total Votes] < Maxvotes), 
+    constituencywise_details[Total Votes]
+) 
+RETURN CALCULATE( 
+    MAX(constituencywise_details[Candidate]), 
+    constituencywise_details[Total Votes] = Secondmaxvotes
+)
 
-5. Dashboard 1: Overview Analysis
 
-The Overview Analysis Dashboard provides a national level summary of election results focusing on alliance performance.
+Runner-Up Statistics (Formatted):
 
-Key KPIs
-1. NDA Performance
+Runner UP vote = "Total Votes :" & [Secondmaxvotes_Logic]
 
-Total seats won by the NDA Alliance
+Runner UP vote share = "Total Votes share : " & [Secondmaxvotes_Percent_Logic] & " %"
 
-Percentage of seats secured by NDA
 
-Bookmark table showing all NDA parties and their seat counts
+Second Runner-Up Candidate:
 
-2. I.N.D.I.A. Performance
+Second Runner UP Condidate = 
+VAR Maxvotes = MAX(constituencywise_details[Total Votes]) 
+VAR Secondmaxvotes = MAXX( 
+    FILTER(constituencywise_details, constituencywise_details[Total Votes] < Maxvotes), 
+    constituencywise_details[Total Votes]
+) 
+VAR thirdmaxvotes = MAXX( 
+    FILTER(constituencywise_details, constituencywise_details[Total Votes] < Secondmaxvotes), 
+    constituencywise_details[Total Votes]
+)
+RETURN CALCULATE( 
+    MAX(constituencywise_details[Candidate]), 
+    constituencywise_details[Total Votes] = thirdmaxvotes
+)
 
-Total seats won by the I.N.D.I.A Alliance
 
-Percentage of seats secured by I.N.D.I.A
+Margin of Victory: Calculated as: Winner_Total_Votes - RunnerUp_Total_Votes.
 
-Bookmark grid displaying alliance parties and seat distribution
+These measures are designed to be context-aware, ensuring they recalculate accurately when the user filters by State or specific Constituency. This complexity is essential for the multi-tiered visual layer.
 
-3. Independent & Other Parties Performance
+5. Multi-Tiered Dashboard Functional Specifications
 
-Total seats won by independent candidates and smaller parties
+The dashboard suite is designed on an "Exploration Path" philosophy, guiding the user from national trends to micro-level details across six specialized views.
 
-Percentage share of total seats
+Dashboard 1: Overview Analysis
 
-Grid matrix showing seat distribution for other parties
+* Objective: National seat distribution.
+* Visuals: KPI cards for NDA, I.N.D.I.A., and Others; Percentage share cards; a Grid Matrix showing seat counts for all alliance parties with logos.
 
-Alliance Analysis
+Dashboard 2: State Demographic
 
-NDA Alliance Analysis
+* Visual 1 (State Map): A filled map showing states color-coded by the majority alliance.
+  * Tooltip: Total Seats, Majority Alliance, NDA Seats count, I.N.D.I.A. Seats count.
+* Visual 2 (Bubble Map): A granular map where each bubble represents a constituency.
+  * Logic: Color-code bubbles by winning alliance (NDA, I.N.D.I.A., OTHER).
 
-Identifies all parties within the NDA coalition
+Dashboard 3: Political Landscape by State
 
-Displays party logos and seat counts
+* Objective: Comparative party analysis within a specific state.
+* Visuals: Dynamic State filter (Slicer); Party-wise Result Grid (Candidate name, Party, Alliance); Donut Chart showing "Party-wise Seat Share."
 
-I.N.D.I.A Alliance Analysis
+Dashboard 4: Constituency Analysis
 
-Identifies all parties within the alliance
+* Objective: Micro-detail on local performance.
+* KPIs: Total Votes, EVM Votes, Postal Votes, Total Candidates.
+* Candidate Table: List State, Name, Party, Total Votes, and Vote Share (%) for the Winner, Runner-Up, and Second Runner-Up.
 
-Shows party-wise seat share
+Dashboard 5: Details Grid
 
-6. Dashboard 2: State Demographic Analysis
+* Objective: Master data repository and drill-through destination.
+* Grid Fields: Constituency Name, Winning Candidate, Runner-Up Candidate, Party Name (Winning), Party Alliance, EVM Votes, Postal Votes, Total Votes, Margin.
 
-This dashboard focuses on state-wise election analysis.
+Dashboard 6: Landing Page
 
-Features
-1. Total Seats & Alliance Majority by State
+* Objective: Navigation hub.
+* Requirements: Clickable cards for all dashboards, minimalist icons, and clear labeling.
 
-Displays:
+6. Interactivity, Navigation, and Drill-Through Architecture
 
-Total Seats
+The user experience is defined by the "Exploration Path," allowing users to navigate between national trends and local outcomes without loss of context.
 
-NDA Seats
+Navigation and Drill-Through Features
 
-I.N.D.I.A Seats
+* Drill-Through Logic: Users can right-click a state or constituency bubble in Dashboard 2 and drill through to Dashboard 5 (Details Grid). The destination must be pre-filtered based on the selected geography.
+* Bookmark Management:
+  * Home Button: A persistent button on all sub-dashboards to return to the Landing Page.
+  * Show All Data: A "Clear Filters" button on the Details Grid using bookmarks to reset all drill-through and slicer selections.
+* Data Portability: The Details Grid must support "Export Data" functionality, allowing researchers to download filtered views into Excel format.
 
-Majority Alliance
+Technical Constraints and UI Standards
 
-Visualization
-
-Map Chart by State
-
-Tooltip showing seat distribution
-
-Drill-through option for detailed data
-
-2. Winning Candidate by Constituency
-
-Displays:
-
-Winning Candidate
-
-Party Name
-
-Total Votes
-
-Margin
-
-Visualization
-
-Bubble Map Chart
-
-Each bubble represents a constituency
-
-Color coding:
-
-Color	Alliance
-Saffron	NDA
-Blue	I.N.D.I.A
-Grey	Others
-3. State with Maximum Seats
-
-This visualization identifies the state where:
-
-NDA or I.N.D.I.A secured the most seats.
-
-Visualization includes:
-
-State Map Chart
-
-Majority alliance color coding
-
-Drill-through data table
-
-7. Dashboard 3: Political Landscape by State
-
-This dashboard allows state-level analysis.
-
-Dynamic Filter
-
-Users can select a specific state.
-
-Key KPIs
-
-Seats won by NDA
-
-Seats won by I.N.D.I.A
-
-Seats won by Independent / Other parties
-
-Visualizations
-1. State Map
-
-Shows constituency boundaries and seat distribution.
-
-2. Party-wise Result Grid
-
-Displays:
-
-Party Name
-
-Alliance
-
-Seats won
-
-3. Party Seat Share
-
-Donut chart showing:
-
-Percentage share of seats by each party.
-
-8. Dashboard 4: Constituency Analysis
-
-This dashboard provides detailed insights into individual constituency election results.
-
-Primary KPIs
-
-Total Votes Cast
-
-Total EVM Votes
-
-Total Postal Votes
-
-Total Candidates Participated
-
-Candidate Performance KPIs
-Winning Candidate
-
-State
-
-Candidate Name
-
-Party
-
-Total Votes
-
-Vote Share %
-
-Runner-Up Candidate
-
-State
-
-Candidate Name
-
-Party
-
-Total Votes
-
-Vote Share %
-
-Second Runner-Up Candidate
-
-State
-
-Candidate Name
-
-Party
-
-Total Votes
-
-Vote Share %
-
-9. Dashboard 5: Details Grid
-
-This dashboard provides a complete tabular dataset view.
-
-Fields Included
-
-Constituency Name
-
-Winning Candidate
-
-Runner-Up Candidate
-
-Party Name
-
-Party Alliance
-
-EVM Votes
-
-Postal Votes
-
-Total Votes
-
-Margin
-
-Functionalities
-1. Drill-Through
-
-Users can drill from other dashboards to view detailed constituency data.
-
-2. Export Data
-
-Users can export the grid into Excel format.
-
-3. Show All Data Button
-
-A bookmark button is implemented to reset filters and display complete data.
-
-10. Dashboard 6: Landing Page
-
-The landing page acts as the central navigation hub for the dashboard.
-
-Navigation Buttons
-
-Users can navigate to:
-
-Overview Analysis
-
-State Demographics
-
-Political Landscape by State
-
-Constituency Analysis
-
-Features
-
-Clean UI Design
-
-Interactive Icons
-
-Hover Effects
-
-Responsive Layout for different screen sizes
-
-Each dashboard contains a Home Button to return to the landing page.
+* Performance: DAX measures should utilize variables to minimize repetitive calculations.
+* UI/UX: A minimalist design using standard alliance colors (e.g., Saffron/Green logic) for quick recognition.
+* Responsiveness: The layout must be optimized for a variety of viewports, including desktops and large-scale analytical displays.
