@@ -1,15 +1,16 @@
 🇮🇳 India General Election 2024 Reporting System
-
+----------------------------------------------------
 📊 Overview
-
+----------------------------------------------------
 The India General Election 2024 Reporting System is a Business Intelligence (BI) solution designed to analyze and visualize one of the largest democratic exercises in the world.
 This system converts complex electoral data into actionable insights by focusing on:
 Alliance-based performance
 Multi-level analytics (National → State → Constituency)
 Advanced candidate ranking logic
+----------------------------------------------------
 🎯 Target Users: Political analysts, researchers, policymakers
 
-
+----------------------------------------------------
 🚀 Project Scope
 The system provides a multi-tier architecture:
 Level
@@ -21,7 +22,7 @@ Description
 📍 Constituency
   Candidate-level insights
 
-
+----------------------------------------------------
 🧩 Data Categorization & Alliance Logic
 
 🔗 Alliance Mapping
@@ -36,7 +37,7 @@ Description
 ⚪ OTHER
   Independent candidates
   Unlisted parties
-
+----------------------------------------------------
 
 🛠 DAX: Alliance Mapping
 
@@ -61,7 +62,7 @@ IF(
     )
 )
 
-
+----------------------------------------------------
 🔄 Data Modeling
 
 Use LOOKUPVALUE to connect tables:
@@ -76,7 +77,7 @@ LOOKUPVALUE(
 Other mappings:
 Party Name
 Party Short Name
-
+----------------------------------------------------
 
 📈 Core KPI Framework
 
@@ -107,13 +108,13 @@ VAR NDASeats = [NDA Seats count]
 VAR INDIAseats = [I.N.D.I.A Seats count]
 RETURN IF(NDASeats >= INDIAseats, "NDA", "I.N.D.I.A.")
 
-
+----------------------------------------------------
 
 📊 Seat Share %
 
   Seat Share = Alliance Seats / Total Seats
 
-
+----------------------------------------------------
 🧠 Advanced Candidate Metrics
 
 🥈 Runner-Up Logic
@@ -134,7 +135,7 @@ DAX
           constituencywise_details[Total Votes] =   Secondmaxvotes
     )
 
-
+----------------------------------------------------
 🥉 Second Runner-Up
 
 DAX
@@ -147,7 +148,7 @@ DAX
   Margin = Winner Votes - Runner-Up Votes
 
 
-
+----------------------------------------------------
 📊 Dashboard Architecture
 
 1️⃣ Overview Dashboard
@@ -182,19 +183,20 @@ DAX
 
 🔍 Drill-Through
   State → Constituency → Details
-
+----------------------------------------------------
 🧭 Navigation
   Home Button (All pages)
   Clear Filters (Bookmark)
-
+----------------------------------------------------
 📤 Export Data
   Download filtered data (Excel)
-
+----------------------------------------------------
 ⚙️ Technical Guidelines
 
 ⚡ Performance
   Use VAR in DAX
 Avoid repeated calculations
+----------------------------------------------------
 🎨 UI/UX
 Minimalist design
 Alliance colors:
@@ -206,6 +208,8 @@ Alliance colors:
 Optimized for:
   Desktop
   Large displays
+
+----------------------------------------------------
 📌 Key Highlights
 
   ✅ Alliance-based analytics
@@ -213,7 +217,7 @@ Optimized for:
   ✅ Advanced candidate ranking
   ✅ Interactive dashboards
   ✅ Export-ready data
-
+----------------------------------------------------
 🏁 Conclusion
 
 This system provides a single source of truth for understanding India’s 2024 election results through:
