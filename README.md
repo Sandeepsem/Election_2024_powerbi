@@ -1,6 +1,6 @@
 <!-- 🔥 BANNER -->
 <p align="center">
-  <img src="YOUR_BANNER_LINK_HERE" width="100%" style="border-radius:12px;">
+  <img src="file_000000007b4c7208812c6fed2c97eedd.png" width="100%" style="border-radius:12px;">
 </p>
 
 <h1 align="center">🇮🇳 India General Election 2024</h1>
@@ -14,7 +14,7 @@
 
 <!-- 🔥 THUMBNAIL -->
 <p align="center">
-  <img src="YOUR_THUMBNAIL_LINK_HERE" width="280" style="border-radius:10px;">
+  <img src="file_000000007b4c7208812c6fed2c97eedd.png" width="280" style="border-radius:10px;">
 </p>
 
 ---
