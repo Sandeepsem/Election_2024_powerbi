@@ -14,9 +14,23 @@
 
 <!-- 🔥 THUMBNAIL -->
 <p align="center">
-  <img src="file_000000007b4c7208812c6fed2c97eedd.png" width="280" style="border-radius:10px;">
+  <img src="Dashboard images/Election_2024_Darshboard_page-0001.jpg" width="280" style="border-radius:10px;">
 </p>
-
+<p align="center">
+  <img src="Dashboard images/Election_2024_Darshboard_page-0002.jpg" style="border-radius:10px;">
+</p>
+<p align="center">
+  <img src="Dashboard images/Election_2024_Darshboard_page-0003.jpg" width="280" style="border-radius:10px;">
+</p>
+<p align="center">
+  <img src="Dashboard images/Election_2024_Darshboard_page-0004.jpg" width="280" style="border-radius:10px;">
+</p>
+<p align="center">
+  <img src="Dashboard images/Election_2024_Darshboard_page-0005.jpg" width="280" style="border-radius:10px;">
+</p>
+<p align="center">
+  <img src="Dashboard images/Election_2024_Darshboard_page-0006.jpg" width="280" style="border-radius:10px;">
+</p>
 ---
 
 ## 🚀 Project Overview
